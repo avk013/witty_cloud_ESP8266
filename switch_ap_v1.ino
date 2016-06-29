@@ -14,7 +14,12 @@ lab_st1=" style='background:blue; color:white;'",
 lab_st2=" style='background:green; color:white;'",
 lab_st3=" style='background:red; color:white;'",
  formnow="";
-ESP8266WebServer server(80);
+IPAddress ip(10,10,2,1);
+IPAddress gateway(10, 10, 2, 1);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress dns(10, 10, 2, 1);
+
+ESP8266WebServer server(ip,80);
 
 const int led = 13;
 const int led2 = 12;
@@ -39,7 +44,7 @@ void handle_led() {
   digitalWrite(led, state);
   digitalWrite(led2, state2);
   digitalWrite(led3, state3);
-  server.send(200, "text/html", "<html><head><meta http-equiv='refresh' content='0;URL=http://192.168.4.1/' /></head></html>");
+  server.send(200, "text/html", "<html><head><meta http-equiv='refresh' content='0;URL=http://10.10.2.1/' /></head></html>");
   }
 
 void setup(void) {
@@ -52,7 +57,8 @@ void setup(void) {
  // WiFi.mode(WIFI_STA);
   //WiFi.disconnect();
   delay(100);
-  WiFi.softAP("Switch","");
+  WiFi.softAPConfig(ip, gateway, subnet);
+  WiFi.softAP("switch-10.10.2.1","");
  IPAddress myIP = WiFi.softAPIP();
  Serial.print("AP IP address: ");
   Serial.println(myIP);
